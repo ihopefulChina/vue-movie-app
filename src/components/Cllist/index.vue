@@ -1,24 +1,28 @@
 <template>
   <div class="cinema_body">
-    <ul>
-      <li v-for="item in cinemaList" :key="item.id">
-        <div>
-          <span>{{ item.nm }}</span>
-        </div>
-        <div class="address">
-          <span>{{ item.addr }}</span>
-          <span>{{ item.distance }}</span>
-        </div>
-        <div class="card">
-          <div
-            v-for="(num, key) in item.tag"
-            v-if="num===1"
-            :key="key"
-            :class="key | classCard"
-          >{{ key | formatCard }}</div>
-        </div>
-      </li>
-    </ul>
+    <Scroller>
+      <ul>
+        <li v-for="item in cinemaList" :key="item.id">
+          <div>
+            <span>{{ item.nm }}</span>
+          </div>
+          <div class="address">
+            <span>{{ item.addr }}</span>
+            <span>{{ item.distance }}</span>
+          </div>
+          <div class="card">
+            <div
+              v-for="(num, key) in item.tag"
+              v-if="num === 1"
+              :key="key"
+              :class="key | classCard"
+            >
+              {{ key | formatCard }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </Scroller>
   </div>
 </template>
 <script>
@@ -27,11 +31,11 @@ export default {
   data() {
     return {
       msg: "",
-      cinemaList: []
+      cinemaList: [],
     };
   },
   mounted() {
-    this.axios.get("/api/cinemaList?cityId=10").then(res => {
+    this.axios.get("/api/cinemaList?cityId=10").then((res) => {
       var msg = res.data.msg;
       if (msg === "ok") {
         this.cinemaList = res.data.data.cinemas;
@@ -44,7 +48,7 @@ export default {
         { key: "allowRefund", value: "改签" },
         { key: "endorse", value: "退票" },
         { key: "sell", value: "折扣卡" },
-        { key: "snack", value: "小吃" }
+        { key: "snack", value: "小吃" },
       ];
       for (var i = 0; i < card.length; i++) {
         if (card[i].key === key) {
@@ -58,7 +62,7 @@ export default {
         { key: "allowRefund", value: "bl" },
         { key: "endorse", value: "bl" },
         { key: "sell", value: "or" },
-        { key: "snack", value: "or" }
+        { key: "snack", value: "or" },
       ];
       for (var i = 0; i < card.length; i++) {
         if (card[i].key === key) {
@@ -66,8 +70,8 @@ export default {
         }
       }
       return "";
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

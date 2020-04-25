@@ -10,7 +10,7 @@
           <router-link tag="div" to="/movie/nowPlaying" class="hot_item"
             >正在热映</router-link
           >
-          <router-link tag="div" to="/movie/ComingSoon" class="hot_item"
+          <router-link tag="div" to="/movie/comingSoon" class="hot_item"
             >即将上映</router-link
           >
         </div>
