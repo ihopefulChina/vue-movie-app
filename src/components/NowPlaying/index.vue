@@ -1,24 +1,32 @@
 <template>
   <div class="movie_body">
-    <ul>
-      <li v-for="item in movieList" :key="item.id">
-        <div class="pic_show"><img :src="item.img | setWH('128.180')" /></div>
-        <div class="info_list">
-          <h2>
-            {{ item.nm }}
-            <img v-if="item.version" src="@/assets/maxs.png" alit="3D max" />
-          </h2>
-          <p>
-            观众评 <span class="grade">{{ item.sc }}</span>
-          </p>
-          <p>主演: {{ item.star }}</p>
-          <p>首映时间: {{ item.rt }}</p>
-        </div>
-        <div class="btn_mall">
-          购票
-        </div>
-      </li>
-    </ul>
+    <Scroller
+      :handleToScroll="handleToScroll"
+      :handleToTouchEnd="handleToTouchEnd"
+    >
+      <ul>
+        <li class="pulldown">{{ pullDownMsg }}</li>
+        <li v-for="item in movieList" :key="item.id">
+          <div class="pic_show" @tap="handToDetail">
+            <img :src="item.img | setWH('128.180')" />
+          </div>
+          <div class="info_list">
+            <h2>
+              {{ item.nm }}
+              <img v-if="item.version" src="@/assets/maxs.png" alit="3D max" />
+            </h2>
+            <p>
+              观众评 <span class="grade">{{ item.sc }}</span>
+            </p>
+            <p>主演: {{ item.star }}</p>
+            <p>首映时间: {{ item.rt }}</p>
+          </div>
+          <div class="btn_mall">
+            购票
+          </div>
+        </li>
+      </ul>
+    </Scroller>
   </div>
 </template>
 
@@ -28,6 +36,7 @@ export default {
   data() {
     return {
       movieList: [],
+      pullDownMsg: "",
     };
   },
   mounted() {
@@ -37,6 +46,28 @@ export default {
         this.movieList = res.data.data.movieList;
       }
     });
+  },
+  methods: {
+    handToDetail() {},
+    handleToScroll(pos) {
+      if (pos.y > 30) {
+        this.pullDownMsg = "正在更新中...";
+      }
+    },
+    handleToTouchEnd(pos) {
+      if (pos.y > 30) {
+        this.axios.get("/api/movieOnInfoList?cityId=12").then((res) => {
+          var msg = res.data.msg;
+          if (msg === "ok") {
+            this.pullDownMsg = "更新完成";
+            setTimeout(() => {
+              this.movieList = res.data.data.movieList;
+              this.pullDownMsg = "";
+            }, 1000);
+          }
+        });
+      }
+    },
   },
 };
 </script>
@@ -55,7 +86,12 @@ export default {
   display: flex;
   align-items: center;
   border-bottom: 1px #e6e6e6 solid;
-  padding-bottom: 10px;
+  padding: 10px;
+}
+.movie_body ul li.pulldown {
+  padding: 0;
+  margin: 0;
+  border: none;
 }
 .movie_body .pic_show {
   width: 64px;
