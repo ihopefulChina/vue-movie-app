@@ -5,6 +5,12 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+import axios from 'axios'
+Vue.prototype.axios = axios;
+
+Vue.filter('setWH', (url, arg) => {
+  return url.replace(/w\.h/, arg);
+});
 new Vue({
   router,
   store,
