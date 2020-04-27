@@ -1,7 +1,8 @@
 <template>
   <div class="city_body">
     <div class="city_list">
-      <Scroller ref="city_List">
+      <Loading v-if="isLoading" />
+      <Scroller v-else ref="city_List">
         <div>
           <div class="city_hot">
             <h2>热门城市</h2>

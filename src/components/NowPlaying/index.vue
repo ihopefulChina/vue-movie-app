@@ -1,8 +1,10 @@
 <template>
   <div class="movie_body">
+    <Loading v-if="isloading" />
     <Scroller
       :handleToScroll="handleToScroll"
       :handleToTouchEnd="handleToTouchEnd"
+      v-else
     >
       <ul>
         <li class="pulldown">{{ pullDownMsg }}</li>
@@ -37,13 +39,22 @@ export default {
     return {
       movieList: [],
       pullDownMsg: "",
+      isloading: true,
+      prevCityId: -1,
     };
   },
-  mounted() {
-    this.axios.get("/api/movieOnInfoList?cityId=10").then((res) => {
+  activated() {
+    var cityId = this.$store.state.city.id;
+    if (this.prevCityId === cityId) {
+      return;
+    }
+    this.isloading = true;
+    this.axios.get("/api/movieOnInfoList?cityId=" + cityId).then((res) => {
       var msg = res.data.msg;
       if (msg === "ok") {
         this.movieList = res.data.data.movieList;
+        this.isloading = false;
+        this.prevCityId = cityId;
       }
     });
   },

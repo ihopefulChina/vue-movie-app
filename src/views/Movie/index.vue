@@ -4,15 +4,12 @@
     <div id="content">
       <div class="movie_menu">
         <router-link tag="div" to="/movie/City" class="city_name">
-          <span>上海</span><i class="iconfont icon-lower-triangle"></i>
+          <span>{{ $store.state.city.nm }}</span>
+          <i class="iconfont icon-lower-triangle"></i>
         </router-link>
         <div class="hot_swtich">
-          <router-link tag="div" to="/movie/nowPlaying" class="hot_item"
-            >正在热映</router-link
-          >
-          <router-link tag="div" to="/movie/comingSoon" class="hot_item"
-            >即将上映</router-link
-          >
+          <router-link tag="div" to="/movie/nowPlaying" class="hot_item">正在热映</router-link>
+          <router-link tag="div" to="/movie/comingSoon" class="hot_item">即将上映</router-link>
         </div>
         <router-link tag="div" to="/movie/Search" class="search_entry">
           <i class="iconfont icon-sousuo"></i>
@@ -28,12 +25,38 @@
 <script>
 import Header from "@/components/Header";
 import Tabbar from "@/components/Tabbar";
+import { messageBox } from "@/components/JS";
 export default {
   name: "Moive",
   components: {
     Header,
-    Tabbar,
+    Tabbar
   },
+  mounted() {
+    setTimeout(() => {
+      this.axios.get("/api/getLocation").then(res => {
+        var msg = res.data.msg;
+        if (msg === "ok") {
+          var nm = res.data.data.nm;
+          var id = res.data.data.id;
+          if (this.$store.state.city.id == id) {
+            return;
+          }
+          messageBox({
+            title: "定位",
+            content: nm,
+            cancel: "取消",
+            ok: "切换定位",
+            handleOk() {
+              window.localStorage.setItem("nowNm", nm);
+              window.localStorage.setItem("nowId", id);
+              window.location.reload();
+            }
+          });
+        }
+      });
+    }, 3000);
+  }
 };
 </script>
 <style scoped>
@@ -44,7 +67,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(255, 255, 255, 0.2);
   z-index: 10;
 }
 .movie_menu .city_name {
