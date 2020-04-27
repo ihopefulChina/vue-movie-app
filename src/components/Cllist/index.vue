@@ -1,6 +1,7 @@
 <template>
   <div class="cinema_body">
-    <Scroller>
+    <Loading v-if="isloading" />
+    <Scroller v-else>
       <ul>
         <li v-for="item in cinemaList" :key="item.id">
           <div>
@@ -16,9 +17,7 @@
               v-if="num === 1"
               :key="key"
               :class="key | classCard"
-            >
-              {{ key | formatCard }}
-            </div>
+            >{{ key | formatCard }}</div>
           </div>
         </li>
       </ul>
@@ -32,13 +31,22 @@ export default {
     return {
       msg: "",
       cinemaList: [],
+      isloading: true,
+      prevCityId: -1
     };
   },
-  mounted() {
-    this.axios.get("/api/cinemaList?cityId=10").then((res) => {
+  activated() {
+    var cityId = this.$store.state.city.id;
+    if (this.prevCityId === cityId) {
+      return;
+    }
+    this.isloading = true;
+    this.axios.get("/api/cinemaList?cityId=" + cityId).then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
         this.cinemaList = res.data.data.cinemas;
+        this.isloading = false;
+        this.prevCityId = cityId;
       }
     });
   },
@@ -48,7 +56,7 @@ export default {
         { key: "allowRefund", value: "改签" },
         { key: "endorse", value: "退票" },
         { key: "sell", value: "折扣卡" },
-        { key: "snack", value: "小吃" },
+        { key: "snack", value: "小吃" }
       ];
       for (var i = 0; i < card.length; i++) {
         if (card[i].key === key) {
@@ -62,7 +70,7 @@ export default {
         { key: "allowRefund", value: "bl" },
         { key: "endorse", value: "bl" },
         { key: "sell", value: "or" },
-        { key: "snack", value: "or" },
+        { key: "snack", value: "or" }
       ];
       for (var i = 0; i < card.length; i++) {
         if (card[i].key === key) {
@@ -70,8 +78,8 @@ export default {
         }
       }
       return "";
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

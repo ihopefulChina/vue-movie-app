@@ -18,10 +18,15 @@
 </template>
 <script>
 export default {
-  name: "Header",
+  name: "Header"
 };
 </script>
 <style scoped>
+#footer {
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(255, 255, 255, 0.2);
+}
 #footer ul {
   display: flex;
   text-align: center;
