@@ -1,31 +1,26 @@
 <template>
   <div class="movie_body">
     <Loading v-if="isloading" />
-    <Scroller
-      :handleToScroll="handleToScroll"
-      :handleToTouchEnd="handleToTouchEnd"
-      v-else
-    >
+    <Scroller :handleToScroll="handleToScroll" :handleToTouchEnd="handleToTouchEnd" v-else>
       <ul>
         <li class="pulldown">{{ pullDownMsg }}</li>
         <li v-for="item in movieList" :key="item.id">
-          <div class="pic_show" @tap="handToDetail">
+          <div class="pic_show" @tap="handToDetail(item.id)">
             <img :src="item.img | setWH('128.180')" />
           </div>
           <div class="info_list">
-            <h2>
+            <h2 @tap="handToDetail(item.id)">
               {{ item.nm }}
               <img v-if="item.version" src="@/assets/maxs.png" alit="3D max" />
             </h2>
             <p>
-              观众评 <span class="grade">{{ item.sc }}</span>
+              观众评
+              <span class="grade">{{ item.sc }}</span>
             </p>
             <p>主演: {{ item.star }}</p>
             <p>首映时间: {{ item.rt }}</p>
           </div>
-          <div class="btn_mall">
-            购票
-          </div>
+          <div class="btn_mall">购票</div>
         </li>
       </ul>
     </Scroller>
@@ -40,7 +35,7 @@ export default {
       movieList: [],
       pullDownMsg: "",
       isloading: true,
-      prevCityId: -1,
+      prevCityId: -1
     };
   },
   activated() {
@@ -49,7 +44,7 @@ export default {
       return;
     }
     this.isloading = true;
-    this.axios.get("/api/movieOnInfoList?cityId=" + cityId).then((res) => {
+    this.axios.get("/api/movieOnInfoList?cityId=" + cityId).then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
         this.movieList = res.data.data.movieList;
@@ -59,7 +54,10 @@ export default {
     });
   },
   methods: {
-    handToDetail() {},
+    handToDetail(movieId) {
+      //console.log(movieId);
+      this.$router.push("/movie/detail/1/" + movieId);
+    },
     handleToScroll(pos) {
       if (pos.y > 30) {
         this.pullDownMsg = "正在更新中...";
@@ -67,7 +65,7 @@ export default {
     },
     handleToTouchEnd(pos) {
       if (pos.y > 30) {
-        this.axios.get("/api/movieOnInfoList?cityId=12").then((res) => {
+        this.axios.get("/api/movieOnInfoList?cityId=12").then(res => {
           var msg = res.data.msg;
           if (msg === "ok") {
             this.pullDownMsg = "更新完成";
@@ -78,8 +76,8 @@ export default {
           }
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
