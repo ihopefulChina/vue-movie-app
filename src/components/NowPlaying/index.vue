@@ -20,7 +20,7 @@
             <p>主演: {{ item.star }}</p>
             <p>首映时间: {{ item.rt }}</p>
           </div>
-          <div class="btn_mall">购票</div>
+          <div class="btn_mall" @tap="handToDetail(item.id)">购票</div>
         </li>
       </ul>
     </Scroller>

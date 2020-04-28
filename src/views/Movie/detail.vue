@@ -6,7 +6,10 @@
     <Loading v-if="isloading" />
     <div id="content" v-else class="contentDetail">
       <div class="detail_list">
-        <div class="detail_list_bg"></div>
+        <div
+          class="detail_list_bg"
+          :style="{'background-image': 'url('+detailMovie.img.replace(/w\.h/,'148.208')+')'}"
+        ></div>
         <div class="detail_list_filter"></div>
         <div class="detail_list_content">
           <div class="detail_list_img">
@@ -29,7 +32,7 @@
         <ul class="swiper-wrapper">
           <li v-for="(item,index) in detailMovie.photos" :key="index" class="swiper-slide">
             <div>
-              <img :src="item | setWH('100.67')" alt />
+              <img :src="item | setWH('200.134')" alt />
             </div>
           </li>
         </ul>
@@ -115,7 +118,7 @@ export default {
 .detail_list .detail_list_bg {
   width: 100%;
   height: 100%;
-  background: url(/images/movie_1.jpg) 0 40%;
+  background: 0 40%;
   filter: blur(20px);
   background-size: cover;
   position: absolute;

@@ -4,19 +4,22 @@
     <div id="content">
       <div class="cinema_menu">
         <div class="city_switch">
-          全城 <i class="iconfont icon-lower-triangle"></i>
+          全城
+          <i class="iconfont icon-lower-triangle"></i>
         </div>
         <div class="brand_swtich">
-          品牌 <i class="iconfont icon-lower-triangle"></i>
+          品牌
+          <i class="iconfont icon-lower-triangle"></i>
         </div>
         <div class="feature_switch">
-          特色 <i class="iconfont icon-lower-triangle"></i>
+          特色
+          <i class="iconfont icon-lower-triangle"></i>
         </div>
       </div>
       <Cllist />
       <!-- <keep-alive>
         <router-view />
-      </keep-alive> -->
+      </keep-alive>-->
     </div>
     <Tabbar />
   </div>
@@ -30,8 +33,8 @@ export default {
   components: {
     Header,
     Tabbar,
-    Cllist,
-  },
+    Cllist
+  }
 };
 </script>
 <style scoped>

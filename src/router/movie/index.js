@@ -1,7 +1,6 @@
 export default {
     path: '/movie',
     component: () => import('@/views/Movie'),
-    //二级路由
     children: [{
             path: 'city',
             component: () => import('@/components/City')
@@ -15,14 +14,17 @@ export default {
             component: () => import('@/components/ComingSoon')
         },
         {
+            path: 'search',
+            component: () => import('@/components/Search')
+        },
+        {
             path: 'detail/1/:movieId',
             components: {
                 default: () => import('@/components/NowPlaying'),
                 detail: () => import('@/views/Movie/detail')
             },
             props: {
-                detail: true,
-
+                detail: true
             }
         },
         {
@@ -32,18 +34,12 @@ export default {
                 detail: () => import('@/views/Movie/detail')
             },
             props: {
-                detail: true,
-
+                detail: true
             }
         },
         {
-            path: 'search',
-            component: () => import('@/components/Search')
-        },
-        {
             path: '/movie',
-            redirect: '/movie/NowPlaying'
-        },
-
+            redirect: '/movie/nowPlaying'
+        }
     ]
 }

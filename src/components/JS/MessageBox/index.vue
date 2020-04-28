@@ -17,7 +17,6 @@ export default {
 .messageBox {
   width: 240px;
   height: 120px;
-  border: 1px solid #ccc;
   border-radius: 8px;
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
