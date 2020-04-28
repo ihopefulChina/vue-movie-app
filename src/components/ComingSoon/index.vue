@@ -4,11 +4,18 @@
     <Scroller v-else>
       <ul>
         <li v-for="item in comingList" :key="item.id">
-          <div class="pic_show"><img :src="item.img | setWH('128.180')" /></div>
+          <div class="pic_show" @tap="handToDetail(item.id)">
+            <img :src="item.img | setWH('128.180')" />
+          </div>
           <div class="info_list">
-            <h2>
+            <h2 @tap="handToDetail(item.id)">
               {{ item.nm
-              }}<img v-if="item.version" src="@/assets/maxs.png" alt="3D max" />
+              }}
+              <img
+                v-if="item.version"
+                src="@/assets/maxs.png"
+                alt="3D max"
+              />
             </h2>
             <p>
               <span class="person">{{ item.wish }}</span> 人想看
@@ -16,9 +23,7 @@
             <p>主演: {{ item.star }}</p>
             <p>{{ item.rt }}上映</p>
           </div>
-          <div class="btn_pre">
-            预售
-          </div>
+          <div class="btn_pre">预售</div>
         </li>
       </ul>
     </Scroller>
@@ -32,7 +37,7 @@ export default {
     return {
       comingList: [],
       isloading: true,
-      prevCityId: -1,
+      prevCityId: -1
     };
   },
   activated() {
@@ -41,7 +46,7 @@ export default {
       return;
     }
     this.isloading = true;
-    this.axios.get("/api/movieComingList?cityId=" + cityId).then((res) => {
+    this.axios.get("/api/movieComingList?cityId=" + cityId).then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
         this.comingList = res.data.data.comingList;
@@ -50,6 +55,11 @@ export default {
       }
     });
   },
+  methods: {
+    handToDetail(movieId) {
+      this.$router.push("/movie/detail/2/" + movieId);
+    }
+  }
 };
 </script>
 
